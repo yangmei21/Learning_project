@@ -5,7 +5,8 @@ from testcases.basic.test_user_register import TestUserRegister
 from testcases.basic.test_user_login import TestUserLogin
 from testcases.basic.test_admin_login import TestAdminLogin
 from testcases.basic.test_add_scenic import TestAddScenic
-
+from testcases.basic.test_del_shopinfo import TestDelshopinfo
+from testcases.basic.test_regibus import TestRegibuss
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -44,9 +45,22 @@ if __name__ == '__main__':
     # case03.test_admin_login_username_err()
     # case03.test_admin_login_right()
 
-    # 调用添加景点(依赖登录，所以需要把登录的方法传过去
-    login=TestAdminLogin()
-    login.test_admin_login_right()
-    case04=TestAddScenic(login)
+    # 调用添加景点(依赖登录，所以需要把登录的方法传过去)
+    # login=TestAdminLogin()
+    # login.test_admin_login_right()
+    # case04=TestAddScenic(login)
     # case04.test_add_scenic_err()
-    case04.test_add_scenic_right()
+    # case04.test_add_scenic_right()
+
+    # 调用商家信息删除（依赖登录，也需要把登录加入）
+    # login=TestAdminLogin()
+    # login.test_admin_login_right()
+    # case05=TestDelshopinfo(login)
+    # # case05.del_cancel_shopinfo()
+    # case05.del_succ_shopinfo()
+
+    # # 调用商家注册（依赖登录，插入登录）
+    login = TestAdminLogin()
+    login.test_admin_login_right()
+    case06=TestRegibuss(login)
+    case06.test_regibus()

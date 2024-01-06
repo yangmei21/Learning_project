@@ -7,62 +7,69 @@ from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 from selenium.webdriver.common.keys import Keys
 import re
+import pytest
+from testcases.pytest.test_login import TestAdminLogin
 
 
 class TestAddScenic(object):
-    def __init__(self, login):
-        self.login = login
+
+    def setup_method(self):
+        self.login = TestAdminLogin
+        print('调用loginadmin--setup')
 
     # 测试添加景区失败，图片封面图为空
-    def test_add_scenic_err(self):
-        excpet = '请上传景点图片或景点缩略图！'
-        # 点击关闭弹框
-        self.login.driver.find_element(By.XPATH, '//*[@id="driver-popover-item"]/div[4]/button').click()
-        sleep(1)
+    # @pytest.mark.dependency(depends=['admin_login'], scope='module')
+    # def test_add_scenic_err(self):
+    #
+    #     excpet = '请上传景点图片或景点缩略图！'
+    #     # 点击关闭弹框
+    #     self.login.driver.find_element(By.XPATH, '//*[@id="driver-popover-item"]/div[4]/button').click()
+    #     sleep(1)
+    #
+    #     # 点击发布信息管理
+    #     self.login.driver.find_element(By.XPATH,
+    #                                    '//*[@id="menuNav"]/div[1]/app-side-nav/div/div[2]/app-nav-bar/ul/li[3]/div[1]/span[1]').click()
+    #     sleep(2)
+    #     # 点击景点管理
+    #     self.login.driver.find_element(By.LINK_TEXT,
+    #                                    '景点管理').click()
+    #     sleep(1)
+    #
+    #     # 点击新建
+    #     self.login.driver.find_element(By.XPATH,
+    #                                    '/html/body/app-root/div/app-default/app-def-layout-content/nz-layout/nz-layout/nz-layout/nz-content/div/div/app-dept/div/app-card-table-wrap/nz-card/div[1]/div/div[2]/div/div[1]/button/span').click()
+    #     # 页面最大化
+    #     self.login.driver.find_element(By.XPATH,
+    #                                    '//*[@id="cdk-overlay-2"]/nz-modal-container/div/div/button/span/div/span[1]').click()
+    #     # 定位分类选择框,点击展开
+    #     self.login.driver.find_element(By.XPATH,
+    #                                    '//*[@id="cdk-overlay-2"]/nz-modal-container/div/div/div[2]/app-dept-manage-modal/form/nz-form-item[1]/nz-form-control/div/div/nz-select').click()
+    #
+    #     options = WebDriverWait(self.login.driver, 10).until(
+    #         EC.visibility_of_all_elements_located((By.XPATH,
+    #                                                '//*[@id="cdk-overlay-3"]/nz-option-container/div/cdk-virtual-scroll-viewport/div[1]/nz-option-item/div'))
+    #     )
+    #     # 定位并选择自己想要勾选的分类
+    #     for option in options:
+    #         if option.text == "温泉":
+    #             option.click()
+    #             break
+    #     # self.login.driver.find_element(By.XPATH,'//*[@id="cdk-overlay-3"]/nz-option-container/div/cdk-virtual-scroll-viewport/div[1]/nz-option-item[6]/div').click()
+    #     sleep(2)
+    #     # 点击确认按钮
+    #     self.login.driver.find_element(By.XPATH,
+    #                                    '//*[@id="cdk-overlay-2"]/nz-modal-container/div/div/div[3]/button[1]').click()
+    #
+    #     loc = (By.XPATH, '//*[@id="cdk-overlay-4"]/nz-message-container/div/nz-message/div/div/div/span[2]')
+    #     WebDriverWait(self.login.driver, 20, 0.5).until(EC.visibility_of_element_located(loc))
+    #     msg = self.login.driver.find_element(*loc).text
+    #     print(msg)
+    #     assert msg == excpet
+    #     # self.login.driver.quit()
 
-        # 点击发布信息管理
-        self.login.driver.find_element(By.XPATH,
-                                       '//*[@id="menuNav"]/div[1]/app-side-nav/div/div[2]/app-nav-bar/ul/li[3]/div[1]/span[1]').click()
-        sleep(2)
-        # 点击景点管理
-        self.login.driver.find_element(By.LINK_TEXT,
-                                       '景点管理').click()
-        sleep(1)
-
-        # 点击新建
-        self.login.driver.find_element(By.XPATH,
-                                       '/html/body/app-root/div/app-default/app-def-layout-content/nz-layout/nz-layout/nz-layout/nz-content/div/div/app-dept/div/app-card-table-wrap/nz-card/div[1]/div/div[2]/div/div[1]/button/span').click()
-        # 页面最大化
-        self.login.driver.find_element(By.XPATH,
-                                       '//*[@id="cdk-overlay-2"]/nz-modal-container/div/div/button/span/div/span[1]').click()
-        # 定位分类选择框,点击展开
-        self.login.driver.find_element(By.XPATH,
-                                       '//*[@id="cdk-overlay-2"]/nz-modal-container/div/div/div[2]/app-dept-manage-modal/form/nz-form-item[1]/nz-form-control/div/div/nz-select').click()
-
-        options = WebDriverWait(self.login.driver, 10).until(
-            EC.visibility_of_all_elements_located((By.XPATH,
-                                                   '//*[@id="cdk-overlay-3"]/nz-option-container/div/cdk-virtual-scroll-viewport/div[1]/nz-option-item/div'))
-        )
-        # 定位并选择自己想要勾选的分类
-        for option in options:
-            if option.text == "温泉":
-                option.click()
-                break
-        # self.login.driver.find_element(By.XPATH,'//*[@id="cdk-overlay-3"]/nz-option-container/div/cdk-virtual-scroll-viewport/div[1]/nz-option-item[6]/div').click()
-        sleep(2)
-        # 点击确认按钮
-        self.login.driver.find_element(By.XPATH,
-                                       '//*[@id="cdk-overlay-2"]/nz-modal-container/div/div/div[3]/button[1]').click()
-
-        loc = (By.XPATH, '//*[@id="cdk-overlay-4"]/nz-message-container/div/nz-message/div/div/div/span[2]')
-        WebDriverWait(self.login.driver, 20, 0.5).until(EC.visibility_of_element_located(loc))
-        msg = self.login.driver.find_element(*loc).text
-        print(msg)
-        assert msg == excpet
-        self.login.driver.quit()
-
-    # 添加景区成功
+    @pytest.mark.dependency(depends=['admin_login'], scope='module')
     def test_add_scenic_right(self):
+        '''添加景区成功'''
         scen_name = '周庄镇'
         scen_detail = '周庄，是一座江南小镇，有"中国第一水乡"之誉，是国家首批5A级景区。周庄始建于1086年(北宋元佑元年)，因邑人周迪功先生捐地修全福寺而得名。春秋时为吴王少子摇的封地，名为贞丰里。'
         scen_add = '江苏省苏州市昆山市周庄镇全福路43号'
@@ -161,7 +168,7 @@ class TestAddScenic(object):
         sleep(2)
         # 点击确认按钮
         self.login.driver.find_element(By.XPATH,
-                                       '//*[@id="cdk-overlay-2"]/nz-modal-container/div/div/div[3]/button[1]/span').click()
+                                       '//*[@id="cdk-overlay-2"]/nz-modal-container/div/div/div[3]/button[1]').click()
         sleep(1)
         # 刷新页面数据（页面刷新不行，我选择使用点击搜索来刷新！！！不是刷新不行，是变量传递的问题o(╥﹏╥)o）
         # self.login.driver.refresh()
@@ -184,4 +191,10 @@ class TestAddScenic(object):
         assert add_total_records == total_records + 1
 
         sleep(3)
+        # self.login.driver.quit()
+
+    def teardowm_class(self):
         self.login.driver.quit()
+
+if __name__ == '__main__':
+    pytest.main(['test_addscen.py'])
